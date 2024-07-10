@@ -24,8 +24,8 @@ namespace SOLIDProject.GameFolder
             public static readonly string Settings = "Настройки игры.";
             public static readonly string PlayGame = "Играть!";
             public static readonly string Statistics = "Статистика.";
-            public static readonly string AutoRangeMenuHeader = "Без установки максимального числа для диапазона загаданное число может состоять из 9 цифр.";
-            public static readonly string AutoAttemptsMenuHeader = "Без установки ограничений число количества попыток может состоять из 9 цифр.";
+            public static readonly string AutoRangeMenuHeader = "Без установки максимального числа для диапазона загаданное число может быть очень большим.";
+            public static readonly string AutoAttemptsMenuHeader = "Без установки ограничений число количества попыток может быть очень большим.";
             public static readonly string NewNumberWithMax = "Установить максимальное число для автоматического выбора.";
             public static readonly string NewNumberWithoutMax = "Установить без ограничений.";
         }
