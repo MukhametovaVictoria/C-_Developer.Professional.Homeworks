@@ -12,4 +12,14 @@
   Итого: можно создать любой класс от BaseSettings с кастомными настройками, затем создать любой класс от IMenu и все это передать в MenuService.
 
   MenuService может что-то вернуть одним из своих методов, например GetResultByDecision() - получаем результат выполнения метода выбранного пункта меню. Дальше уже решаем что с этим результатом делать.
+
+  Для классов описала какие принципы попыталась реализовать.
+  Кратко: 
+  1. BaseSettings - Реализация принципа D - Dependency inversion И O - Open/Closed
+  2. Invoker - Реализация принципа S -Single responsibility
+  3. MenuService - Принципы S, L, D
+  4. IMenu - Реализация принципа L - Liskov substitution
+  5. IGenerator и ITextWriter - Реализация принципа I - Interface segregation
+
+     Более подробное описание в файлах классов.
      
