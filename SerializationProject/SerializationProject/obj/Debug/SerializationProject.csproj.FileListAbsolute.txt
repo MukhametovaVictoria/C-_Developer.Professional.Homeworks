@@ -1,0 +1,10 @@
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\bin\Debug\SerializationProject.exe.config
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\bin\Debug\SerializationProject.exe
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\bin\Debug\SerializationProject.pdb
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\obj\Debug\SerializationProject.csproj.AssemblyReference.cache
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\obj\Debug\SerializationProject.csproj.CoreCompileInputs.cache
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\obj\Debug\SerializationProject.exe
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\obj\Debug\SerializationProject.pdb
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\bin\Debug\Newtonsoft.Json.dll
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\bin\Debug\Newtonsoft.Json.xml
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\SerializationProject\SerializationProject\obj\Debug\SerializationProject.csproj.CopyComplete
