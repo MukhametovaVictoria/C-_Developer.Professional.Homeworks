@@ -69,13 +69,8 @@ namespace DelegatesProj
                 foreach (FileInfo fi in files)
                 {
                     var fileArgs = InvokeEvent(fi);
-                    Console.WriteLine($"Найден файл {fileArgs.FileName}.");
-
-                    //Возможность отмены дальнейшего поиска из обработчика
-                    if (!String.IsNullOrEmpty(_extension) && fileArgs.FileName.Contains(_extension))
-                    { 
-                        return false; 
-                    }
+                    if (fileArgs.IsFinal)
+                        return false;
                 }
 
                 //получаем все подкаталоги
@@ -99,11 +94,18 @@ namespace DelegatesProj
         /// Подписка на событие нахождения файла
         /// </summary>
         /// <param name="sender"></param>
-        /// <param name="eventArgs"></param>
-        private void OnFileFound(object sender, EventArgs eventArgs)
+        /// <param name="fileArgs"></param>
+        private void OnFileFound(object sender, FileArgs fileArgs)
         {
-            var fileArgs = (FileArgs)eventArgs;
             _files.Add(fileArgs.FileInfo);
+            Console.WriteLine($"Найден файл {fileArgs.FileName}.");
+            fileArgs.IsFinal = false;
+            
+            //Возможность отмены дальнейшего поиска из обработчика
+            if (!String.IsNullOrEmpty(_extension) && fileArgs.FileName.Contains(_extension))
+            {
+                fileArgs.IsFinal = true;
+            }
         }
 
         /// <summary>

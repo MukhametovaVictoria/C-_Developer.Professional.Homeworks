@@ -12,10 +12,13 @@ namespace DelegatesProj
         /// Название файла
         /// </summary>
         public string FileName { get; }
+
         /// <summary>
         /// Информация о файле
         /// </summary>
         public FileInfo FileInfo { get; }
+
+        public bool IsFinal { get; set; }
 
         public FileArgs(FileInfo fileInfo)
         {
