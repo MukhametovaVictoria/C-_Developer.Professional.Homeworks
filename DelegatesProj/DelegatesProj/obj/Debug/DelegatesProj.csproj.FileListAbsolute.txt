@@ -5,3 +5,10 @@ C:\Users\User_ATC\OneDrive\Рабочий стол\папка\DelegatesProj\Dele
 C:\Users\User_ATC\OneDrive\Рабочий стол\папка\DelegatesProj\DelegatesProj\obj\Debug\DelegatesProj.csproj.CoreCompileInputs.cache
 C:\Users\User_ATC\OneDrive\Рабочий стол\папка\DelegatesProj\DelegatesProj\obj\Debug\DelegatesProj.exe
 C:\Users\User_ATC\OneDrive\Рабочий стол\папка\DelegatesProj\DelegatesProj\obj\Debug\DelegatesProj.pdb
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\C-_Developer.Professional.Homeworks\DelegatesProj\DelegatesProj\bin\Debug\DelegatesProj.exe.config
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\C-_Developer.Professional.Homeworks\DelegatesProj\DelegatesProj\bin\Debug\DelegatesProj.exe
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\C-_Developer.Professional.Homeworks\DelegatesProj\DelegatesProj\bin\Debug\DelegatesProj.pdb
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\C-_Developer.Professional.Homeworks\DelegatesProj\DelegatesProj\obj\Debug\DelegatesProj.csproj.AssemblyReference.cache
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\C-_Developer.Professional.Homeworks\DelegatesProj\DelegatesProj\obj\Debug\DelegatesProj.csproj.CoreCompileInputs.cache
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\C-_Developer.Professional.Homeworks\DelegatesProj\DelegatesProj\obj\Debug\DelegatesProj.exe
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\C-_Developer.Professional.Homeworks\DelegatesProj\DelegatesProj\obj\Debug\DelegatesProj.pdb
