@@ -25,10 +25,24 @@ namespace DelegatesProj
                 
                 Console.WriteLine();
 
+                test.FileFound += OnFileFound;
+
                 test.RunProcess(dirPath, pattern, ext);
+
+                test.FileFound -= OnFileFound;
 
                 Console.WriteLine($"\n--------------------------------------------------------\n");
             }
+        }
+
+        /// <summary>
+        /// Подписка на событие нахождения файла
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="fileArgs"></param>
+        private static void OnFileFound(object sender, FileArgs fileArgs)
+        {
+            Console.WriteLine($"Найден файл {fileArgs.FileName}.");
         }
     }
 

@@ -18,7 +18,7 @@ namespace DelegatesProj
             T elem = default(T);
             foreach (var item in collection)
             {
-                var num = convertToNumber((T)item);
+                var num = convertToNumber(item);
                 if (num > max)
                 {
                     max = num;

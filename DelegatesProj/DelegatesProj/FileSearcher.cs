@@ -29,11 +29,7 @@ namespace DelegatesProj
             _files = new List<FileInfo>();
             _extension = ext;
 
-            FileFound += OnFileFound;
-
             Search(dirInfo, pattern);
-
-            FileFound -= OnFileFound;
             
             if(_files.Count > 0)
             {
@@ -52,20 +48,11 @@ namespace DelegatesProj
         /// <returns>Продолжать поиск Да/Нет</returns>
         private bool Search(DirectoryInfo directory, string searchPattern)
         {
-            FileInfo[] files = null;
-            DirectoryInfo[] subDirs = null;
             // Получаем все файлы в текущем каталоге
             try
             {
-                files = directory.GetFiles(searchPattern);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+                var files = directory.GetFiles(searchPattern);
 
-            if (files != null)
-            {
                 foreach (FileInfo fi in files)
                 {
                     var fileArgs = InvokeEvent(fi);
@@ -74,38 +61,22 @@ namespace DelegatesProj
                 }
 
                 //получаем все подкаталоги
-                subDirs = directory.GetDirectories();
-                if(subDirs != null)
+                var subDirs = directory.GetDirectories();
+
+                //проходим по каждому подкаталогу
+                foreach (DirectoryInfo dirInfo in subDirs)
                 {
-                    //проходим по каждому подкаталогу
-                    foreach (DirectoryInfo dirInfo in subDirs)
-                    {
-                        //РЕКУРСИЯ с прерыванием цикла в случае false
-                        if (!Search(dirInfo, searchPattern))
-                            return false;
-                    }
+                    //РЕКУРСИЯ с прерыванием цикла в случае false
+                    if (!Search(dirInfo, searchPattern))
+                        return false;
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Подписка на событие нахождения файла
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="fileArgs"></param>
-        private void OnFileFound(object sender, FileArgs fileArgs)
-        {
-            _files.Add(fileArgs.FileInfo);
-            Console.WriteLine($"Найден файл {fileArgs.FileName}.");
-            fileArgs.IsFinal = false;
-            
-            //Возможность отмены дальнейшего поиска из обработчика
-            if (!String.IsNullOrEmpty(_extension) && fileArgs.FileName.Contains(_extension))
-            {
-                fileArgs.IsFinal = true;
-            }
         }
 
         /// <summary>
@@ -115,8 +86,16 @@ namespace DelegatesProj
         /// <returns>Аргументы события</returns>
         private FileArgs InvokeEvent(FileInfo file)
         {
-            var args = new FileArgs(file);
+            var args = new FileArgs(file) { IsFinal = false};
             FileFound?.Invoke(this, args);
+
+            _files.Add(file);
+            //Возможность отмены дальнейшего поиска из обработчика
+            if (!String.IsNullOrEmpty(_extension) && args.FileName.Contains(_extension))
+            {
+                args.IsFinal = true;
+            }
+
             return args;
         }
     }

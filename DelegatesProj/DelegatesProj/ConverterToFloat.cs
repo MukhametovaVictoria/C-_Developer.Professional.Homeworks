@@ -15,7 +15,7 @@ namespace DelegatesProj
                 return 0;
 
             var result = file.FullName.Length + file.Length;
-            return (float)result;
+            return result;
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace DelegatesProj
             if (str == null)
                 return 0;
 
-            return (float)str.Length;
+            return str.Length;
         }
     }
 }
