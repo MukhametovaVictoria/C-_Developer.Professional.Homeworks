@@ -1,0 +1,7 @@
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\TaskProject\TaskProject\bin\Debug\TaskProject.exe.config
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\TaskProject\TaskProject\bin\Debug\TaskProject.exe
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\TaskProject\TaskProject\bin\Debug\TaskProject.pdb
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\TaskProject\TaskProject\obj\Debug\TaskProject.csproj.AssemblyReference.cache
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\TaskProject\TaskProject\obj\Debug\TaskProject.csproj.CoreCompileInputs.cache
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\TaskProject\TaskProject\obj\Debug\TaskProject.exe
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\TaskProject\TaskProject\obj\Debug\TaskProject.pdb
