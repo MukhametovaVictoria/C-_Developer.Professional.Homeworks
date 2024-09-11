@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TaskProject
@@ -115,7 +117,9 @@ namespace TaskProject
             using (var reader = new StreamReader(filePath))
             {
                 string content = await reader.ReadToEndAsync();
-                return content.Count(c => c == ' ');
+                var count = content.Count(c => c == ' ');
+                Console.WriteLine($"Путь до файла = {filePath}, Количество пробелов = {count}, Поток = {Thread.CurrentThread.ManagedThreadId}.");
+                return count;
             }
         }
     }
