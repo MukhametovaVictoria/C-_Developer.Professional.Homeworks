@@ -27,16 +27,14 @@ namespace TaskProject
             {
                 try
                 {
-                    Console.ReadKey();
-
                     // Прочитать все файлы в папке и вычислить количество пробелов
                     Console.WriteLine("\nВведите полный путь до папки, из которой считать файлы формата .txt:\n");
                     var folderPath = Console.ReadLine();
-                    if (String.IsNullOrEmpty(folderPath))
+                    /*if (String.IsNullOrEmpty(folderPath))
                     {
                         folderPath = @"..\..\Files";
                         Console.WriteLine($"\nПуть по умолчанию: {folderPath}\n");
-                    }
+                    }*/
 
                     ReadFilesInFolder(folderPath);
                 }
@@ -50,10 +48,10 @@ namespace TaskProject
         /// <summary>
         /// Прочитать 3 файла параллельно и вычислить количество пробелов
         /// </summary>
-        private static async void ReadThreeFiles()
+        private static void ReadThreeFiles()
         {
             var files = new string[] { @"..\..\Files\TextFile1.txt", @"..\..\Files\TextFile2.txt", @"..\..\Files\TextFile3.txt" };
-            var spaceCounts = await GetSpacesInFiles(files);
+            var spaceCounts = GetSpacesInFiles(files);
             Console.WriteLine($"\nРезультат выполнения считывания трех файлов:");
             for (int i = 0; i < files.Length; i++)
                 Console.WriteLine($"Количество пробелов в {files[i]}: {spaceCounts[i]}");
@@ -64,7 +62,7 @@ namespace TaskProject
         /// <summary>
         /// Прочитать все файлы в папке и вычислить количество пробелов
         /// </summary>
-        private static async void ReadFilesInFolder(string folderPath)
+        private static void ReadFilesInFolder(string folderPath)
         {
             if(String.IsNullOrEmpty(folderPath))
             {
@@ -88,7 +86,7 @@ namespace TaskProject
                 return;
             }
 
-            var spaceCounts = await GetSpacesInFiles(filesInFolder);
+            var spaceCounts = GetSpacesInFiles(filesInFolder);
             var totalSpaceCount = spaceCounts.Sum();
             stopwatch.Stop();
             Console.WriteLine($"\nРезультат выполнения считывания файлов из папки {folderPath}:");
@@ -102,25 +100,23 @@ namespace TaskProject
         /// </summary>
         /// <param name="files">Список файлов</param>
         /// <returns>Массив количества пробелов в каждом файле</returns>
-        private static async Task<int[]> GetSpacesInFiles(IEnumerable<string> files)
+        private static int[] GetSpacesInFiles(IEnumerable<string> files)
         {
-            return await Task.WhenAll(files.Select(file => GetSpacesInFile(file)));
-        }
-
-        /// <summary>
-        /// Подсчет количества пробелов в одном файле
-        /// </summary>
-        /// <param name="filePath">Путь до файла</param>
-        /// <returns>Количество пробелов в файле</returns>
-        private static async Task<int> GetSpacesInFile(string filePath)
-        {
-            using (var reader = new StreamReader(filePath))
+            var result = new List<int>();
+            Parallel.ForEach(files, (filePath) =>
             {
-                string content = await reader.ReadToEndAsync();
-                var count = content.Count(c => c == ' ');
-                Console.WriteLine($"Путь до файла = {filePath}, Количество пробелов = {count}, Поток = {Thread.CurrentThread.ManagedThreadId}.");
-                return count;
-            }
+                using (var reader = new StreamReader(filePath))
+                {
+                    Stopwatch stopwatch = Stopwatch.StartNew();
+                    string content = reader.ReadToEnd();
+                    var count = content.Count(c => c == ' ');
+                    stopwatch.Stop();
+                    Console.WriteLine($"Путь до файла = {filePath}, Количество пробелов = {count}, Поток = {Thread.CurrentThread.ManagedThreadId}.\nВремя считывания и подсчета пробелов: {stopwatch.ElapsedMilliseconds} мс.\n");
+                    result.Add(count);
+                }
+            });
+
+            return result.ToArray();
         }
     }
 }
