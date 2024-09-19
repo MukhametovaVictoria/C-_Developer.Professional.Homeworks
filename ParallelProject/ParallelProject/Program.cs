@@ -9,14 +9,6 @@ using System.Threading.Tasks;
 
 namespace ParallelProject
 {
-    public class Result
-    {
-        public string MethodName { get; set; }
-        public string TimeString { get; set; }
-        public long Ms { get; set; }
-        public long Sum { get; set; }
-    }
-
     class Program
     {
         static void Main(string[] args)
@@ -27,6 +19,143 @@ namespace ParallelProject
             Start(10000000);
 
             Console.ReadKey();
+        }
+
+        public static void Start(int count)
+        {
+            var list = Enumerable.Range(1, count).Select(x => (long)x).ToList();
+            var methods = new Func<List<long>, long>[] { ForSequenceSum, ForeachSequenceSum, SimpleLINQSum, 
+                ParallelForEachSum, ParallelLINQSum, ParallelListForEachSumWithChunkify };
+            var results = new List<Result>();
+            var length = new Length();
+            foreach (var method in methods)
+            {
+                var result = new Result()
+                {
+                    MethodName = method.Method.Name
+                };
+
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                result.Sum = method(list);
+                stopwatch.Stop();
+
+                result.TimeString = stopwatch.ElapsedMilliseconds.ToString();
+                result.Ms = stopwatch.ElapsedMilliseconds;
+
+                SetLength(result.MethodName, result.TimeString, result.Sum.ToString(), length);
+
+                results.Add(result);
+            }
+
+            Additional(length, results, list);
+            ShowResults(length, results, count);
+        }
+
+        //Вынесено в отдельный метод для проверки скорости счета без учета разделения списка на части
+        private static void Additional(Length length, List<Result> results, List<long> list)
+        {
+            var res = new Result()
+            {
+                MethodName = "ParallelListForEachSum"
+            };
+            var chunks = list.Chunkify(1000).ToList();
+            Stopwatch sw = Stopwatch.StartNew();
+            res.Sum = ParallelListForEachSum(chunks);
+            sw.Stop();
+            res.TimeString = sw.ElapsedMilliseconds.ToString();
+            res.Ms = sw.ElapsedMilliseconds;
+            SetLength(res.MethodName, res.TimeString, res.Sum.ToString(), length);
+            results.Add(res);
+        }
+
+        private static long ForSequenceSum(List<long> list)
+        {
+            long result = 0;
+            for (int i = 0; i < list.Count; ++i)
+            {
+                result += list[i];
+            }
+            return result;
+        }
+
+        private static long ForeachSequenceSum(List<long> list)
+        {
+            long result = 0;
+            foreach (var x in list)
+            {
+                result += x;
+            }
+            return result;
+        }
+
+        private static long SimpleLINQSum(List<long> list)
+        {
+            long result = list.Sum();
+            return  result;
+        }
+
+        private static long ParallelListForEachSum(List<IEnumerable<long>> chunks)
+        {
+            var tasks = new Task[chunks.Count()];
+            var results = new long[chunks.Count()];
+            for (var i = 0; i < tasks.Length; i++)
+            {
+                tasks[i] = Task.Factory.StartNew((Object obj) =>
+                {
+                    var num = (int)obj;
+                    results[num] = chunks[num].Sum();
+                }, i);
+            }
+            Task.WaitAll(tasks);
+            return results.Sum();
+        }
+
+        private static long ParallelListForEachSumWithChunkify(List<long> list)
+        {
+            var chunks = list.Chunkify(1000).ToList();
+            return ParallelListForEachSum(chunks);
+        }
+
+        private static long ParallelLINQSum(List<long> list)
+        {
+            return list.AsParallel().WithDegreeOfParallelism(5).Sum();
+        }
+
+        private static long ParallelForEachSum(List<long> list)
+        {
+            long result = 0;
+            Parallel.ForEach(list, x => Interlocked.Add(ref result, x));
+            return result;
+        }
+
+        private static void SetLength(string methodName, string time, string sum, Length length)
+        {
+            if (methodName.Length > length.NameLength)
+                length.NameLength = methodName.Length;
+            if (time.Length > length.TimeLength)
+                length.TimeLength = time.Length;
+            if (length.SumLength < sum.Length)
+                length.SumLength = sum.Length;
+        }
+
+        private static void ShowResults(Length length, List<Result> results, int count)
+        {
+            var methodCaption = "Метод";
+            var timeCaption = "Время выполнения в мс.";
+            var sumCaption = "Сумма";
+            if (length.SumLength < sumCaption.Length)
+                length.SumLength = sumCaption.Length;
+            Console.WriteLine($"\nРезультаты: Количество элементов массива = {count}.");
+            var captions = $"|{methodCaption}{new string(' ', length.NameLength - methodCaption.Length)}|{timeCaption}|{sumCaption}{new string(' ', length.SumLength - sumCaption.Length)}|";
+            Console.WriteLine($"{new string('-', captions.Length)}");
+            Console.WriteLine($"{captions}");
+            Console.WriteLine($"{new string('-', captions.Length)}");
+            if (length.TimeLength < timeCaption.Length) length.TimeLength = timeCaption.Length;
+            foreach (var result in results)
+            {
+                Console.WriteLine($"|{result.MethodName}{new string(' ', length.NameLength - result.MethodName.Length)}|{result.TimeString}{new string(' ', length.TimeLength - result.TimeString.Length)}|{result.Sum}{new string(' ', length.SumLength - result.Sum.ToString().Length)}|");
+                Console.WriteLine($"{new string('-', captions.Length)}");
+            }
         }
 
         public static void ShowInfo()
@@ -81,109 +210,46 @@ namespace ParallelProject
 
             Console.WriteLine();
         }
+    }
 
-        public static void Start(int count)
+    public static class Extensions
+    {
+        public static IEnumerable<IEnumerable<T>> Chunkify<T>(this IEnumerable<T> source, int size)
         {
-            var list = Enumerable.Range(1, count).ToList();
-            var methods = new Func<List<int>, long>[] { ForSequenceSum, ForeachSequenceSum, SimpleLINQSum, ParallelListForEachSum, ParallelForEachSum, ParallelLINQSum };
-            var results = new List<Result>();
-            var maxNameLength = 0;
-            var maxTimeLength = 0;
-            var maxSumLength = 0;
-            foreach (var method in methods)
+            int count = 0;
+            using (var iter = source.GetEnumerator())
             {
-                var result = new Result()
+                while (iter.MoveNext())
                 {
-                    MethodName = method.Method.Name
-                };
-
-                Stopwatch stopwatch = Stopwatch.StartNew();
-                result.Sum = method(list);
-                stopwatch.Stop();
-
-                result.TimeString = stopwatch.ElapsedMilliseconds.ToString();
-                result.Ms = stopwatch.ElapsedMilliseconds;
-
-                if (method.Method.Name.Length > maxNameLength)
-                    maxNameLength = method.Method.Name.Length;
-                if (result.MethodName.Length > maxTimeLength)
-                    maxTimeLength = result.MethodName.Length;
-                if (maxSumLength < result.Sum.ToString().Length)
-                    maxSumLength = result.Sum.ToString().Length;
-
-                results.Add(result);
-
-            }
-            var methodCaption = "Метод";
-            var timeCaption = "Время выполнения в мс.";
-            var sumCaption = "Сумма";
-            if (maxSumLength < sumCaption.Length)
-                maxSumLength = sumCaption.Length;
-            Console.WriteLine($"\nРезультаты: Количество элементов массива = {count}.");
-            var captions = $"|{methodCaption}{new string(' ', maxNameLength - methodCaption.Length)}|{timeCaption}|{sumCaption}{new string(' ', maxSumLength - sumCaption.Length)}|";
-            Console.WriteLine($"{new string('-', captions.Length)}");
-            Console.WriteLine($"{captions}");
-            Console.WriteLine($"{new string('-', captions.Length)}");
-            if (maxTimeLength < timeCaption.Length) maxTimeLength = timeCaption.Length;
-            foreach (var result in results)
-            {
-                Console.WriteLine($"|{result.MethodName}{new string(' ', maxNameLength- result.MethodName.Length)}|{result.TimeString}{new string(' ', maxTimeLength - result.TimeString.Length)}|{result.Sum}{new string(' ', maxSumLength - result.Sum.ToString().Length)}|");
-                Console.WriteLine($"{new string('-', captions.Length)}");
-            }
-        }
-
-        private static long ForSequenceSum(List<int> list)
-        {
-            long result = 0;
-            for (int i = 0; i < list.Count; ++i)
-            {
-                result += list[i];
-            }
-            return result;
-        }
-
-        private static long ForeachSequenceSum(List<int> list)
-        {
-            long result = 0;
-            foreach (var x in list)
-            {
-                result += x;
-            }
-            return result;
-        }
-
-        private static long SimpleLINQSum(List<int> list)
-        {
-            long result = list.Select(x => (long)x).Sum();
-            return  result;
-        }
-
-        private static long ParallelListForEachSum(List<int> list)
-        {
-            long result = 0;
-            list.ForEach(x => result += x);
-            return result;
-        }
-
-        private static long ParallelLINQSum(List<int> list)
-        {
-            var rangePartitioner = Partitioner.Create(0, list.Count);
-            return rangePartitioner.AsParallel().Sum(range =>
-            {
-                long localSum = 0;
-                for (int i = range.Item1; i < range.Item2; i++)
-                {
-                    localSum += list[i];
+                    var chunk = new T[size];
+                    count = 1;
+                    chunk[0] = iter.Current;
+                    for (int i = 1; i < size && iter.MoveNext(); i++)
+                    {
+                        chunk[i] = iter.Current;
+                        count++;
+                    }
+                    if (count < size)
+                    {
+                        Array.Resize(ref chunk, count);
+                    }
+                    yield return chunk;
                 }
-                return localSum;
-            });
+            }
         }
+    }
+    public class Result
+    {
+        public string MethodName { get; set; }
+        public string TimeString { get; set; }
+        public long Ms { get; set; }
+        public long Sum { get; set; }
+    }
 
-        private static long ParallelForEachSum(List<int> list)
-        {
-            long result = 0;
-            Parallel.ForEach(list, x => Interlocked.Add(ref result, x));
-            return result;
-        }
+    public class Length
+    {
+        public int TimeLength { get; set; }
+        public int NameLength { get; set; }
+        public int SumLength { get; set; }
     }
 }
