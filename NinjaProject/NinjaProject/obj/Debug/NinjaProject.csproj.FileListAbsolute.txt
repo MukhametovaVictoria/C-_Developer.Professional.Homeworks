@@ -1,0 +1,7 @@
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\NinjaProject\NinjaProject\bin\Debug\NinjaProject.exe.config
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\NinjaProject\NinjaProject\bin\Debug\NinjaProject.exe
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\NinjaProject\NinjaProject\bin\Debug\NinjaProject.pdb
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\NinjaProject\NinjaProject\obj\Debug\NinjaProject.csproj.AssemblyReference.cache
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\NinjaProject\NinjaProject\obj\Debug\NinjaProject.csproj.CoreCompileInputs.cache
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\NinjaProject\NinjaProject\obj\Debug\NinjaProject.exe
+C:\Users\User_ATC\OneDrive\Рабочий стол\папка\NinjaProject\NinjaProject\obj\Debug\NinjaProject.pdb

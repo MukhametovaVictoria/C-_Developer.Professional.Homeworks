@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{69EB0B36-4C7E-48E0-B2D9-15A4C9619628}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>NinjaProject</RootNamespace>
+    <AssemblyName>NinjaProject</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataClass.cs" />
+    <Compile Include="Entities\Kiri\KisameHoshigaki.cs" />
+    <Compile Include="Entities\Konoha\ItachiUchiha.cs" />
+    <Compile Include="Entities\Konoha\KakashiHatake.cs" />
+    <Compile Include="Entities\Konoha\SakuraHaruno.cs" />
+    <Compile Include="Entities\Suna\ChiyoBaasama.cs" />
+    <Compile Include="Entities\Suna\TemariSobakuno.cs" />
+    <Compile Include="Factories\Interfaces\INinjaFactory.cs" />
+    <Compile Include="Factories\KonohaNinjaFactory.cs" />
+    <Compile Include="Factories\KiriNinjaFactory.cs" />
+    <Compile Include="Factories\SunaNinjaFactory.cs" />
+    <Compile Include="Entities\AbstractClasses\BaseNinjaPrototype.cs" />
+    <Compile Include="Entities\Interfaces\IMyCloneable.cs" />
+    <Compile Include="Entities\Konoha\NarutoUzumaki.cs" />
+    <Compile Include="Entities\Kiri\SuigetsuHōzuki.cs" />
+    <Compile Include="Entities\Suna\GaaraSobakuno.cs" />
+    <Compile Include="Enums\Occupation.cs" />
+    <Compile Include="Enums\Level.cs" />
+    <Compile Include="Enums\Village.cs" />
+    <Compile Include="Factories\MainNinjaFactory.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
